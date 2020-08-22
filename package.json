@@ -1,0 +1,35 @@
+{
+  "name": "react-practice",
+  "version": "1.0.0",
+  "description": "practice for interview",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run dev",
+    "webpack": "webpack --config config/webpack.config.production.js",
+    "build": "npm run clean && npm run sass && npm run webpack",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --config webpack.config.dev.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dustinjack99/react-practice.git"
+  },
+  "author": "DGJ",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dustinjack99/react-practice/issues"
+  },
+  "homepage": "https://github.com/dustinjack99/react-practice#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
