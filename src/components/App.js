@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import SearchParams from './SearchParams';
-import Details from './Details';
+import DetailsWithErrorBoundary from './Details';
 import { Router, Link } from '@reach/router';
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
 
           <Router>
             <SearchParams path='/' />
-            <Details path='/details/:id' />
+            <DetailsWithErrorBoundary path='/details/:id' />
           </Router>
         </div>
       </React.StrictMode>
