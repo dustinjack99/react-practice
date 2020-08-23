@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import SearchParams from './SearchParams';
 import DetailsWithErrorBoundary from './Details';
-import { Router, Link } from '@reach/router';
+import { Router } from '@reach/router';
+import NavBar from './Navbar';
 
 class App extends Component {
   render() {
     return (
       <React.StrictMode>
         <div>
-          <header>
-            <Link to='/'>Adopt Me!</Link>
-          </header>
+          <NavBar />
 
           <Router>
             <SearchParams path='/' />
