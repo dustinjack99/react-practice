@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-import SearchParams from './SearchParams';
-import DetailsWithErrorBoundary from './Details';
+import React, { Component, lazy, Suspense } from 'react';
 import { Router } from '@reach/router';
 import NavBar from './Navbar';
+import DetailsWithErrorBoundary from './Details';
+
+//how to lazy load routes
+const SearchParams = lazy(() => import('./SearchParams'));
 
 class App extends Component {
   render() {
@@ -11,10 +13,12 @@ class App extends Component {
         <div>
           <NavBar />
 
-          <Router>
-            <SearchParams path='/' />
-            <DetailsWithErrorBoundary path='/details/:id' />
-          </Router>
+          <Suspense fallback={<h1>loading route...</h1>}>
+            <Router>
+              <SearchParams path='/' />
+              <DetailsWithErrorBoundary path='/details/:id' />
+            </Router>
+          </Suspense>
         </div>
       </React.StrictMode>
     );
