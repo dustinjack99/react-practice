@@ -7,13 +7,13 @@ import App from '../src/components/App';
 
 const PORT = process.env.PORT || 3000;
 
-const html = fs.readFileSync('../dist/index.html').toString();
+const html = fs.readFileSync('/dist/index.html').toString();
 
 const parts = html.split('not rendered');
 
 const app = express();
 
-app.use('../dist', express.static('../dist'));
+app.use('/dist', express.static('/dist'));
 app.use((req, res) => {
   const reactMarkup = (
     <ServerLocation url={req.url}>
