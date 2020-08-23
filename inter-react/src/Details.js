@@ -1,33 +1,19 @@
-import React, { lazy } from "react";
-import pet, { Photo } from "@frontendmasters/pet";
-import { navigate, RouteComponentProps } from "@reach/router";
+import React from "react";
+import pet from "@frontendmasters/pet";
+import { navigate } from "@reach/router";
 import Carousel from "./Carousel";
+import Modal from "./Modal";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
 
-const Modal = lazy(() => import("./Modal"));
-
-class Details extends React.Component<RouteComponentProps<{ id: string }>> {
-  public state = {
-    loading: true,
-    showModal: false,
-    name: "",
-    animal: "",
-    location: "",
-    description: "",
-    media: [] as Photo[],
-    url: "",
-    breed: ""
-  };
-  public componentDidMount() {
-    if (!this.props.id) {
-      navigate("/");
-      return;
-    }
+class Details extends React.Component {
+  state = { loading: true, showModal: false };
+  componentDidMount() {
     pet
-      .animal(+this.props.id)
+      .animal(this.props.id)
       .then(({ animal }) => {
         this.setState({
+          url: animal.url,
           name: animal.name,
           animal: animal.type,
           location: `${animal.contact.address.city}, ${
@@ -36,16 +22,14 @@ class Details extends React.Component<RouteComponentProps<{ id: string }>> {
           description: animal.description,
           media: animal.photos,
           breed: animal.breeds.primary,
-          url: animal.url,
           loading: false
         });
       })
-      .catch((err: Error) => this.setState({ error: err }));
+      .catch(err => this.setState({ error: err }));
   }
-  public toggleModal = () =>
-    this.setState({ showModal: !this.state.showModal });
-  public adopt = () => navigate(this.state.url);
-  public render() {
+  toggleModal = () => this.setState({ showModal: !this.state.showModal });
+  adopt = () => navigate(this.state.url);
+  render() {
     if (this.state.loading) {
       return <h1>loading … </h1>;
     }
@@ -69,8 +53,8 @@ class Details extends React.Component<RouteComponentProps<{ id: string }>> {
           <ThemeContext.Consumer>
             {([theme]) => (
               <button
-                style={{ backgroundColor: theme }}
                 onClick={this.toggleModal}
+                style={{ backgroundColor: theme }}
               >
                 Adopt {name}
               </button>
@@ -82,7 +66,7 @@ class Details extends React.Component<RouteComponentProps<{ id: string }>> {
               <h1>Would you like to adopt {name}?</h1>
               <div className="buttons">
                 <button onClick={this.adopt}>Yes</button>
-                <button onClick={this.toggleModal}>No</button>
+                <button onClick={this.toggleModal}>No, I am a monster</button>
               </div>
             </Modal>
           ) : null}
@@ -92,9 +76,7 @@ class Details extends React.Component<RouteComponentProps<{ id: string }>> {
   }
 }
 
-export default function DetailsErrorBoundary(
-  props: RouteComponentProps<{ id: string }>
-) {
+export default function DetailsErrorBoundary(props) {
   return (
     <ErrorBoundary>
       <Details {...props} />
