@@ -12,12 +12,16 @@ const SearchParams = () => {
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
   const [breed, BreedDropdown, updateBreed] = useDropdown("Breed", "", breeds);
 
-  async function requestPets() {
-    const { animals } = await pet.animals({
-      location,
-      breed,
-      type: animal
-    });
+  function requestPets() {
+    const { animals } = pet
+      .animals({
+        location,
+        breed,
+        type: animal
+      })
+      .then(({ animals }) => {
+        setPets(animals || []);
+      });
 
     console.log("animals", animals);
 
