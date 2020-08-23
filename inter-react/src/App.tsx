@@ -1,15 +1,15 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Router, Link } from "@reach/router";
-import ThemeContext from "./ThemeContext";
+import { Provider } from "react-redux";
+import store from "./store";
 
 const Details = lazy(() => import("./Details"));
 const SearchParams = lazy(() => import("./SearchParams"));
 
 const App = () => {
-  const theme = useState("darkblue");
   return (
-    <ThemeContext.Provider value={theme}>
+    <Provider store={store}>
       <div>
         <header>
           <Link to="/">Adopt Me!</Link>
@@ -21,7 +21,7 @@ const App = () => {
           </Router>
         </Suspense>
       </div>
-    </ThemeContext.Provider>
+    </Provider>
   );
 };
 

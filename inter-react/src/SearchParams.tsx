@@ -1,18 +1,17 @@
 import React, {
   useState,
   useEffect,
-  useContext,
   FunctionComponent
 } from "react";
 import pet, { ANIMALS, Animal } from "@frontendmasters/pet";
+import { connect } from "react-redux";
 import useDropdown from "./useDropdown";
-import Results from "./Results";
-import ThemeContext from "./ThemeContext";
+import Results from "./Results"
+import changeTheme from './actionCreators/changeTheme'
+import changeLocation from './actionCreators/changeLocation'
 import { RouteComponentProps } from "@reach/router";
 
-const SearchParams: FunctionComponent<RouteComponentProps> = () => {
-  const [theme, setTheme] = useContext(ThemeContext);
-  const [location, updateLocation] = useState("Seattle, WA");
+const SearchParams: FunctionComponent<RouteComponentProps> = props => {
   const [breeds, updateBreeds] = useState([] as string[]);
   const [pets, setPets] = useState([] as Animal[]);
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
@@ -20,12 +19,10 @@ const SearchParams: FunctionComponent<RouteComponentProps> = () => {
 
   async function requestPets() {
     const { animals } = await pet.animals({
-      location,
+      location: props.location,
       breed,
       type: animal
     });
-
-    console.log("animals", animals);
 
     setPets(animals);
   }
@@ -52,9 +49,9 @@ const SearchParams: FunctionComponent<RouteComponentProps> = () => {
           Location
           <input
             id="location"
-            value={location}
+            value={props.location}
             placeholder="Location"
-            onChange={e => updateLocation(e.target.value)}
+            onChange={e => props.updateLocation(e.target.value)}
           />
         </label>
         <AnimalDropdown />
@@ -62,9 +59,9 @@ const SearchParams: FunctionComponent<RouteComponentProps> = () => {
         <label htmlFor="location">
           Theme
           <select
-            value={theme}
-            onChange={e => setTheme(e.target.value)}
-            onBlur={e => setTheme(e.target.value)}
+            value={props.theme}
+            onChange={e => props.setTheme(e.target.value)}
+            onBlur={e => props.setTheme(e.target.value)}
           >
             <option value="peru">Peru</option>
             <option value="darkblue">Dark Blue</option>
@@ -72,11 +69,21 @@ const SearchParams: FunctionComponent<RouteComponentProps> = () => {
             <option value="mediumorchid">Medium Orchid</option>
           </select>
         </label>
-        <button style={{ backgroundColor: theme }}>Submit</button>
+        <button style={{ backgroundColor: props.theme }}>Submit</button>
       </form>
       <Results pets={pets} />
     </div>
   );
 };
 
-export default SearchParams;
+const mapStateToProps = ({ theme, location }) => ({
+  theme,
+  location
+});
+
+const mapDispatchToProps = dispatch => {
+  setTheme: theme => dispatchEvent(changeTheme(theme)),
+  updateLocation: location => dispatchEvent(changeLocation(location))
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchParams);
