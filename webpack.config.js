@@ -3,7 +3,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/components/ClientApp.js',
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'index_bundle.js',

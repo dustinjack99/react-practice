@@ -1,10 +1,6 @@
-import React, { Component, lazy, Suspense } from 'react';
-import { Router } from '@reach/router';
+import React, { Component } from 'react';
+import { GuardLazyComponentToSSR } from './GuardLazyComponentToSSR';
 import NavBar from './Navbar';
-import DetailsWithErrorBoundary from './Details';
-
-//how to lazy load routes
-const SearchParams = lazy(() => import('./SearchParams'));
 
 class App extends Component {
   render() {
@@ -12,13 +8,7 @@ class App extends Component {
       <React.StrictMode>
         <div>
           <NavBar />
-
-          <Suspense fallback={<h1>loading route...</h1>}>
-            <Router>
-              <SearchParams path='/' />
-              <DetailsWithErrorBoundary path='/details/:id' />
-            </Router>
-          </Suspense>
+          <GuardLazyComponentToSSR />
         </div>
       </React.StrictMode>
     );
